@@ -9,7 +9,7 @@ struct EarnTimeView: View {
     var body: some View {
         ZStack(alignment: .top) {
             PoseCameraView(detector: detector)
-                .ignoresSafeArea(edges: [.top, .leading, .trailing])
+                .ignoresSafeArea(edges: [.top, .leading, .trailing]) // keep tab bar visible
 
             VStack(spacing: 10) {
                 HStack {
@@ -17,12 +17,19 @@ struct EarnTimeView: View {
                         Text("Pushups to earn time")
                             .font(.headline)
 
-                        Text("Reps: \(counter.reps)  •  Phase: \(counter.phase)")
+                        Text("Reps: \(counter.reps) • Phase: \(counter.phase)")
                             .font(.subheadline)
 
-                        let minutesRemaining = bank.secondsRemaining / 60
-                        Text("Time: \(minutesRemaining) min")
+                        Text("Time: \(bank.minutesRemaining) min")
                             .font(.subheadline)
+
+                        if let angle = detector.elbowAngle {
+                            Text(String(format: "Elbow angle: %.0f°", angle))
+                                .font(.caption)
+                        } else {
+                            Text(detector.statusText)
+                                .font(.caption)
+                        }
                     }
                     Spacer()
                 }
